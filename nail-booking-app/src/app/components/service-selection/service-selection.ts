@@ -4,6 +4,10 @@ import { BookingService, Service } from '../../services/booking';
 
 declare var anime: any;
 
+interface ServiceWithIcon extends Service {
+  iconIndex: number;
+}
+
 @Component({
   selector: 'app-service-selection',
   standalone: true,
@@ -14,23 +18,27 @@ declare var anime: any;
 export class ServiceSelection implements OnInit, AfterViewInit {
   @ViewChild('servicesContainer', { static: false }) servicesContainer!: ElementRef;
   
-  services: Service[] = [];
+  services: ServiceWithIcon[] = [];
   selectedService: string | null = null;
 
   constructor(private bookingService: BookingService) {}
 
   ngOnInit(): void {
-    this.services = this.bookingService.services;
+    // Map services to include icon indices (0-5 for the 6 icons in the sprite)
+    this.services = this.bookingService.services.map((service, index) => ({
+      ...service,
+      iconIndex: index
+    }));
     this.selectedService = this.bookingService.getCurrentState().service;
   }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.initializeFlowerAnimations();
+      this.initializeIconAnimations();
     }, 100);
   }
 
-  selectService(service: Service): void {
+  selectService(service: ServiceWithIcon): void {
     if (this.selectedService === service.name) return;
     
     this.selectedService = service.name;
@@ -41,53 +49,57 @@ export class ServiceSelection implements OnInit, AfterViewInit {
     // Auto-advance to next step after animation
     setTimeout(() => {
       this.bookingService.goToStep(2);
-    }, 1000);
+    }, 800);
   }
 
-  private initializeFlowerAnimations(): void {
+  private initializeIconAnimations(): void {
     if (typeof anime === 'undefined') return;
     
-    const flowerSVGs = this.servicesContainer.nativeElement.querySelectorAll('.flower-svg');
+    const serviceIcons = this.servicesContainer.nativeElement.querySelectorAll('.service-icon');
     
-    flowerSVGs.forEach((svg: any) => {
-      const petals = svg.querySelectorAll('.petal');
-      
-      // Initial closed bud state
-      anime.set(petals, {
-        scale: 0.3,
-        translateX: '25px',
-        translateY: '25px',
-      });
+    // Set initial state for icons
+    anime.set(serviceIcons, {
+      scale: 0.8,
+      opacity: 0.7
+    });
+
+    // Animate icons in
+    anime({
+      targets: serviceIcons,
+      scale: 1,
+      opacity: 1,
+      delay: anime.stagger(100),
+      duration: 600,
+      easing: 'easeOutElastic(1, .8)'
     });
   }
 
-  private animateServiceSelection(selectedService: Service): void {
+  private animateServiceSelection(selectedService: ServiceWithIcon): void {
     if (typeof anime === 'undefined') return;
     
     const allBuds = this.servicesContainer.nativeElement.querySelectorAll('.service-bud');
     
     allBuds.forEach((bud: any) => {
-      const svg = bud.querySelector('.flower-svg');
-      const petals = svg?.querySelectorAll('.petal');
+      const icon = bud.querySelector('.service-icon');
+      const text = bud.querySelector('p');
       const isSelected = bud.dataset.service === selectedService.name;
       
-      if (petals) {
+      if (icon) {
         anime({
-          targets: petals,
-          scale: isSelected ? 1 : 0,
-          translateX: isSelected ? 0 : '25px',
-          translateY: isSelected ? 0 : '25px',
-          duration: 800,
+          targets: icon,
+          scale: isSelected ? 1.2 : 0.6,
+          opacity: isSelected ? 1 : 0.3,
+          rotate: isSelected ? '360deg' : '0deg',
+          duration: 600,
           easing: 'easeInOutExpo',
         });
       }
       
-      const text = bud.querySelector('p');
       if (text) {
         anime({
           targets: text,
           opacity: isSelected ? 1 : 0.3,
-          translateY: isSelected ? 0 : '10px',
+          scale: isSelected ? 1.1 : 0.9,
           duration: 500,
           delay: 100
         });
@@ -95,50 +107,35 @@ export class ServiceSelection implements OnInit, AfterViewInit {
     });
   }
 
-  onServiceHover(service: Service, isEntering: boolean): void {
+  onServiceHover(service: ServiceWithIcon, isEntering: boolean): void {
     if (typeof anime === 'undefined' || this.selectedService === service.name) return;
     
     const serviceBud = this.servicesContainer.nativeElement.querySelector(`[data-service="${service.name}"]`);
-    const petals = serviceBud?.querySelector('.flower-svg')?.querySelectorAll('.petal');
+    const icon = serviceBud?.querySelector('.service-icon');
     
-    if (petals) {
+    if (icon) {
       anime({
-        targets: petals,
-        scale: isEntering ? 0.35 : 0.3,
+        targets: icon,
+        scale: isEntering ? 1.1 : 1,
         duration: 300,
         easing: 'easeOutQuad'
       });
     }
   }
 
-  createFlowerSVG(service: Service, index: number): string {
-    const gradientId = `grad-${index}`;
+  getIconPosition(iconIndex: number): { x: number, y: number } {
+    // Assuming the icons are arranged in a 3x2 grid or 2x3 grid
+    // You may need to adjust these values based on the actual layout of your sprite
+    const iconsPerRow = 3; // Adjust based on your sprite layout
+    const iconWidth = 100; // Adjust based on your sprite icon width
+    const iconHeight = 100; // Adjust based on your sprite icon height
     
-    return `
-      <svg class="flower-svg" viewBox="0 0 100 100" width="100%" height="100%">
-        <defs>
-          <radialGradient id="${gradientId}">
-            <stop offset="0%" stop-color="#FFF" stop-opacity="0.7"/>
-            <stop offset="100%" stop-color="${service.budColor}"/>
-          </radialGradient>
-        </defs>
-        ${this.generatePetals(gradientId)}
-      </svg>
-    `;
-  }
-
-  private generatePetals(gradientId: string): string {
-    let petals = '';
-    for (let i = 0; i < 6; i++) {
-      petals += `
-        <path class="petal" 
-              fill="url(#${gradientId})" 
-              d="M 50 0 C 20 20, 20 50, 50 50 C 80 50, 80 20, 50 0 Z" 
-              transform-origin="50 50" 
-              transform="rotate(${i * 60})">
-        </path>
-      `;
-    }
-    return petals;
+    const row = Math.floor(iconIndex / iconsPerRow);
+    const col = iconIndex % iconsPerRow;
+    
+    return {
+      x: col * iconWidth,
+      y: row * iconHeight
+    };
   }
 }

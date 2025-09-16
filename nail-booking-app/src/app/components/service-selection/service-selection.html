@@ -1,17 +1,22 @@
 <h2 class="step-title text-3xl font-bold text-center mb-8">Choose Your Service</h2>
 <div #servicesContainer class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
-  <div 
-    *ngFor="let service of services; let i = index" 
-    class="service-bud cursor-pointer transition-transform duration-300 hover:scale-105"
-    [attr.data-service]="service.name"
-    (click)="selectService(service)"
-    (mouseenter)="onServiceHover(service, true)"
-    (mouseleave)="onServiceHover(service, false)">
-    
-    <div class="w-24 h-24 mx-auto bud-svg-container" [innerHTML]="createFlowerSVG(service, i)">
+  @for (service of services; track service.name; let i = $index) {
+    <div 
+      class="service-bud cursor-pointer transition-transform duration-300 hover:scale-105"
+      [attr.data-service]="service.name"
+      (click)="selectService(service)"
+      (mouseenter)="onServiceHover(service, true)"
+      (mouseleave)="onServiceHover(service, false)">
+      
+      <div class="w-24 h-24 mx-auto icon-container">
+        <div 
+          class="service-icon w-full h-full"
+          [class]="'nail-icon-' + service.iconIndex">
+        </div>
+      </div>
+      <p class="text-center mt-2 font-semibold text-gray-700 transition-all duration-300">
+        {{ service.name }}
+      </p>
     </div>
-    <p class="text-center mt-2 font-semibold text-gray-700 transition-all duration-300">
-      {{ service.name }}
-    </p>
-  </div>
+  }
 </div>

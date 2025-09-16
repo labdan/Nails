@@ -17,35 +17,41 @@
     
     <div class="grid grid-cols-7 gap-1 text-center">
       <!-- Day headers -->
-      <div *ngFor="let dayName of dayNames" class="font-bold text-gray-500 p-2">
-        {{ dayName }}
-      </div>
+      @for (dayName of dayNames; track dayName) {
+        <div class="font-bold text-gray-500 p-2">
+          {{ dayName }}
+        </div>
+      }
       
       <!-- Calendar days -->
-      <div 
-        *ngFor="let calendarDay of calendarDays" 
-        class="date-cell p-2 w-8 h-8 flex items-center justify-center cursor-pointer transition-all duration-300 rounded-full border-2 border-transparent"
-        [class.available]="!calendarDay.isDisabled && calendarDay.isCurrentMonth"
-        [class.disabled]="calendarDay.isDisabled || !calendarDay.isCurrentMonth"
-        [class.selected]="calendarDay.isSelected"
-        [class.text-gray-300]="!calendarDay.isCurrentMonth"
-        (click)="selectDate(calendarDay)">
-        {{ calendarDay.day }}
-      </div>
+      @for (calendarDay of calendarDays; track calendarDay.dateString) {
+        <div 
+          class="date-cell p-2 w-8 h-8 flex items-center justify-center cursor-pointer transition-all duration-300 rounded-full border-2 border-transparent"
+          [class.available]="!calendarDay.isDisabled && calendarDay.isCurrentMonth"
+          [class.disabled]="calendarDay.isDisabled || !calendarDay.isCurrentMonth"
+          [class.selected]="calendarDay.isSelected"
+          [class.text-gray-300]="!calendarDay.isCurrentMonth"
+          (click)="selectDate(calendarDay)">
+          {{ calendarDay.day }}
+        </div>
+      }
     </div>
   </div>
   
   <!-- Time Slots -->
-  <div class="w-full md:w-48" *ngIf="selectedDate">
-    <h3 class="font-bold text-lg text-center text-gray-700 mb-4">Available Times</h3>
-    <div class="flex flex-wrap md:flex-col gap-2 justify-center">
-      <div 
-        *ngFor="let time of timeSlots" 
-        class="time-slot p-2 w-full text-center border-2 border-rose-200 cursor-pointer transition-all duration-300 rounded-full"
-        [class.selected]="selectedTime === time"
-        (click)="selectTime(time)">
-        {{ time }}
+  @if (selectedDate) {
+    <div class="w-full md:w-48">
+      <h3 class="font-bold text-lg text-center text-gray-700 mb-4">Available Times</h3>
+      <div class="flex flex-wrap md:flex-col gap-2 justify-center">
+        @for (time of timeSlots; track time) {
+          <div 
+            class="time-slot p-2 w-full text-center border-2 border-rose-200 cursor-pointer transition-all duration-300 rounded-full"
+            [class.selected]="selectedTime === time"
+            (click)="selectTime(time)">
+            {{ time }}
+          </div>
+        }
       </div>
     </div>
-  </div>
+  }
 </div>

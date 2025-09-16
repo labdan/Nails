@@ -11,17 +11,46 @@
     transform: scale(1.05);
   }
   
-  .flower-svg {
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
-  }
-  
   p {
     transition: all 0.3s ease;
   }
 }
 
-.bud-svg-container {
+.icon-container {
   display: flex;
   align-items: center;
   justify-content: center;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+.service-icon {
+  background-image: url('/assets/nailspics.png');
+  background-repeat: no-repeat;
+  background-size: 300px 200px; /* Adjust based on your sprite dimensions */
+  transition: all 0.3s ease;
+}
+
+/* Individual icon positions - adjust these based on your actual sprite layout */
+.nail-icon-0 {
+  background-position: 0 0; /* Classic Manicure */
+}
+
+.nail-icon-1 {
+  background-position: -100px 0; /* Gel Manicure */
+}
+
+.nail-icon-2 {
+  background-position: -200px 0; /* Acrylic Extensions */
+}
+
+.nail-icon-3 {
+  background-position: 0 -100px; /* Nail Art */
+}
+
+.nail-icon-4 {
+  background-position: -100px -100px; /* Pedicure */
+}
+
+.nail-icon-5 {
+  background-position: -200px -100px; /* Spa Treatment */
 }
