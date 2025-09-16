@@ -48,7 +48,7 @@ export class ServiceSelection implements OnInit, AfterViewInit {
     
     // Auto-advance to next step after animation
     setTimeout(() => {
-      this.bookingService.goToStep(2);
+      this.bookingService.goToStep(3);
     }, 800);
   }
 

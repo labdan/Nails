@@ -94,11 +94,13 @@ export class BookingService {
     const state = this.getCurrentState();
     switch (step) {
       case 1:
-        return !!state.service;
+        return !!state.details.phone && state.details.phone.length >= 10; // Phone number step
       case 2:
-        return !!state.date && !!state.time;
+        return !!state.service; // Service selection step
       case 3:
-        return !!state.details.name && !!state.details.email;
+        return !!state.date && !!state.time; // Date & time step
+      case 4:
+        return !!state.details.name && !!state.details.email; // User details step
       default:
         return false;
     }

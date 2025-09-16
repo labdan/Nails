@@ -1,0 +1,22 @@
+.step-title {
+  font-family: 'Playfair Display', serif;
+  color: #8D5B4C;
+}
+
+.welcome-element {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.form-input {
+  transition: all 0.3s ease;
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba(141, 91, 76, 0.1);
+  }
+}
+
+select.form-input {
+  background-image: none;
+  padding-right: 2rem;
+}

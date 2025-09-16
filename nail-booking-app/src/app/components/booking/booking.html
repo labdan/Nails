@@ -1,14 +1,21 @@
 <div class="booking-container w-full max-w-2xl mx-auto rounded-2xl shadow-lg p-6 md:p-10 relative overflow-hidden">
   <div id="booking-steps">
-    <!-- Step 1: Services -->
+    <!-- Step 1: Phone Number -->
     @if (bookingState.currentStep === 1) {
+      <div class="step fade-in">
+        <app-phonenumber></app-phonenumber>
+      </div>
+    }
+
+    <!-- Step 2: Services -->
+    @if (bookingState.currentStep === 2) {
       <div class="step fade-in">
         <app-service-selection></app-service-selection>
       </div>
     }
 
-    <!-- Step 2: Date & Time -->
-    @if (bookingState.currentStep === 2) {
+    <!-- Step 3: Date & Time -->
+    @if (bookingState.currentStep === 3) {
       <div class="step fade-in">
         <h2 class="step-title text-3xl font-bold text-center mb-2">Pick a Date & Time</h2>
         <p class="text-center text-gray-500 mb-6">For: <span class="font-semibold">{{ bookingState.service }}</span></p>
@@ -16,15 +23,15 @@
       </div>
     }
 
-    <!-- Step 3: Your Details -->
-    @if (bookingState.currentStep === 3) {
+    <!-- Step 4: Your Details -->
+    @if (bookingState.currentStep === 4) {
       <div class="step fade-in">
         <app-user-details></app-user-details>
       </div>
     }
 
-    <!-- Step 4: Confirmation -->
-    @if (bookingState.currentStep === 4) {
+    <!-- Step 5: Confirmation -->
+    @if (bookingState.currentStep === 5) {
       <div class="step fade-in">
         <app-confirmation></app-confirmation>
       </div>

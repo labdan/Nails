@@ -1,0 +1,55 @@
+<div class="text-center">
+  <h1 class="welcome-element step-title text-4xl font-bold mb-2 opacity-0">
+    Welcome to the Nail Salon
+  </h1>
+  <p class="welcome-element text-gray-600 text-lg mb-8 opacity-0">
+    Please enter your phone number to get started
+  </p>
+  
+  <div class="max-w-md mx-auto space-y-6">
+    <!-- Country Code and Phone Number -->
+    <div class="welcome-element flex gap-3 opacity-0">
+      <!-- Country Code Dropdown -->
+      <div class="relative">
+        <select 
+          [(ngModel)]="countryCode"
+          (change)="onPhoneChange()"
+          class="form-input w-20 p-3 text-lg border-2 border-rose-200 rounded-lg focus:border-rose-400 focus:outline-none appearance-none bg-white">
+          @for (country of countryCodes; track country.code) {
+            <option [value]="country.code">{{ country.code }}</option>
+          }
+        </select>
+        <div class="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </div>
+      </div>
+      
+      <!-- Phone Number Input -->
+      <div class="flex-1 relative">
+        <input 
+          type="tel" 
+          [(ngModel)]="phoneNumber"
+          (input)="onPhoneChange()"
+          class="form-input w-full p-3 text-lg border-2 border-rose-200 rounded-lg focus:border-rose-400 focus:outline-none"
+          placeholder="Enter phone number"
+          required>
+      </div>
+    </div>
+    
+    <!-- Validation Message -->
+    @if (phoneNumber && !isPhoneValid()) {
+      <div class="welcome-element text-rose-500 text-sm opacity-0">
+        Please enter a valid phone number (minimum 7 digits)
+      </div>
+    }
+    
+    <!-- Success Message -->
+    @if (isPhoneValid()) {
+      <div class="welcome-element text-green-600 text-sm opacity-0">
+        ✓ Phone number looks good!
+      </div>
+    }
+  </div>
+</div>

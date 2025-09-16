@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 import { BookingService, BookingState } from '../../services/booking';
+import { Phonenumber } from '../phonenumber/phonenumber';
 import { ServiceSelection } from '../service-selection/service-selection';
 import { DateTimePicker } from '../date-time-picker/date-time-picker';
 import { UserDetails } from '../user-details/user-details';
@@ -10,7 +11,7 @@ import { Confirmation } from '../confirmation/confirmation';
 @Component({
   selector: 'app-booking',
   standalone: true,
-  imports: [CommonModule, ServiceSelection, DateTimePicker, UserDetails, Confirmation],
+  imports: [CommonModule, Phonenumber, ServiceSelection, DateTimePicker, UserDetails, Confirmation],
   templateUrl: './booking.html',
   styleUrl: './booking.scss'
 })
@@ -45,7 +46,7 @@ export class BookingComponent implements OnInit, OnDestroy {
 
   nextStep(): void {
     const nextStep = this.bookingState.currentStep + 1;
-    if (nextStep <= 4) {
+    if (nextStep <= 5) { // Updated to 5 steps total
       this.goToStep(nextStep);
     }
   }
@@ -62,14 +63,14 @@ export class BookingComponent implements OnInit, OnDestroy {
   }
 
   showBackButton(): boolean {
-    return this.bookingState.currentStep > 1 && this.bookingState.currentStep < 4;
+    return this.bookingState.currentStep > 1 && this.bookingState.currentStep < 5;
   }
 
   showNextButton(): boolean {
-    return this.bookingState.currentStep < 4;
+    return this.bookingState.currentStep < 5;
   }
 
   getNextButtonText(): string {
-    return this.bookingState.currentStep === 3 ? 'Confirm Booking' : 'Next';
+    return this.bookingState.currentStep === 4 ? 'Confirm Booking' : 'Next';
   }
 }
