@@ -1,1 +1,26 @@
-<p>confirmation works!</p>
+<div class="text-center">
+  <div #confirmationFlower class="mx-auto mb-4"></div>
+  
+  <h2 class="step-title text-3xl font-bold text-center mb-4">Appointment Booked!</h2>
+  
+  <p class="text-gray-600 text-lg">
+    Thank you, <span class="font-semibold">{{ bookingDetails.details.name }}</span>!
+  </p>
+  
+  <p class="text-gray-500 mt-2">
+    A confirmation has been sent to your email.
+  </p>
+  
+  <div class="mt-6 bg-rose-50 p-4 rounded-lg border border-rose-200">
+    <p class="font-semibold text-gray-700">{{ bookingDetails.service }}</p>
+    <p class="text-gray-600">
+      {{ formattedDate }} at {{ bookingDetails.time }}
+    </p>
+  </div>
+  
+  <button 
+    (click)="startNewBooking()" 
+    class="mt-6 btn-secondary px-6 py-2 rounded-lg font-semibold">
+    Book Another Appointment
+  </button>
+</div>

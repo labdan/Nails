@@ -1,0 +1,27 @@
+.date-cell, .time-slot {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-radius: 9999px;
+  border: 2px solid transparent;
+}
+
+.date-cell.available:hover, .time-slot:hover {
+  background-color: #E8C2CA; /* Lighter rose */
+  color: #fff;
+}
+
+.date-cell.selected, .time-slot.selected {
+  background-color: #D1A3AC; /* Deeper rose */
+  color: #fff;
+  border-color: #8D5B4C;
+}
+
+.date-cell.disabled {
+  color: #ccc;
+  cursor: not-allowed;
+}
+
+.time-slot {
+  opacity: 0;
+  transform: translateY(-30px);
+}

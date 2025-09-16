@@ -1,1 +1,51 @@
-<p>date-time-picker works!</p>
+<div class="flex flex-col md:flex-row gap-8">
+  <!-- Calendar -->
+  <div class="flex-1">
+    <div class="flex justify-between items-center mb-4">
+      <button 
+        (click)="previousMonth()" 
+        class="p-2 rounded-full hover:bg-gray-200 transition-colors">
+        &lt;
+      </button>
+      <h3 class="font-bold text-xl text-gray-700">{{ currentMonthYear }}</h3>
+      <button 
+        (click)="nextMonth()" 
+        class="p-2 rounded-full hover:bg-gray-200 transition-colors">
+        &gt;
+      </button>
+    </div>
+    
+    <div class="grid grid-cols-7 gap-1 text-center">
+      <!-- Day headers -->
+      <div *ngFor="let dayName of dayNames" class="font-bold text-gray-500 p-2">
+        {{ dayName }}
+      </div>
+      
+      <!-- Calendar days -->
+      <div 
+        *ngFor="let calendarDay of calendarDays" 
+        class="date-cell p-2 w-8 h-8 flex items-center justify-center cursor-pointer transition-all duration-300 rounded-full border-2 border-transparent"
+        [class.available]="!calendarDay.isDisabled && calendarDay.isCurrentMonth"
+        [class.disabled]="calendarDay.isDisabled || !calendarDay.isCurrentMonth"
+        [class.selected]="calendarDay.isSelected"
+        [class.text-gray-300]="!calendarDay.isCurrentMonth"
+        (click)="selectDate(calendarDay)">
+        {{ calendarDay.day }}
+      </div>
+    </div>
+  </div>
+  
+  <!-- Time Slots -->
+  <div class="w-full md:w-48" *ngIf="selectedDate">
+    <h3 class="font-bold text-lg text-center text-gray-700 mb-4">Available Times</h3>
+    <div class="flex flex-wrap md:flex-col gap-2 justify-center">
+      <div 
+        *ngFor="let time of timeSlots" 
+        class="time-slot p-2 w-full text-center border-2 border-rose-200 cursor-pointer transition-all duration-300 rounded-full"
+        [class.selected]="selectedTime === time"
+        (click)="selectTime(time)">
+        {{ time }}
+      </div>
+    </div>
+  </div>
+</div>

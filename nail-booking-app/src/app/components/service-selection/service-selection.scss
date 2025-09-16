@@ -1,0 +1,27 @@
+.step-title {
+  font-family: 'Playfair Display', serif;
+  color: #8D5B4C;
+}
+
+.service-bud {
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+  
+  .flower-svg {
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+  }
+  
+  p {
+    transition: all 0.3s ease;
+  }
+}
+
+.bud-svg-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

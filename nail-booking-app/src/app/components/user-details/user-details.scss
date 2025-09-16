@@ -1,0 +1,35 @@
+.step-title {
+  font-family: 'Playfair Display', serif;
+  color: #8D5B4C;
+}
+
+.form-field {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.form-input {
+  background: transparent;
+  border-bottom: 2px solid #D1A3AC;
+  transition: border-color 0.3s ease;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  
+  &:focus {
+    outline: none;
+    border-color: #8D5B4C;
+  }
+  
+  &:focus + label,
+  &:not(:placeholder-shown) + label {
+    transform: translateY(-1.5rem) scale(0.9);
+    color: #8D5B4C;
+  }
+}
+
+label {
+  pointer-events: none;
+  transition: all 0.3s ease;
+}

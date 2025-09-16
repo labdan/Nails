@@ -1,0 +1,22 @@
+.step-title {
+  font-family: 'Playfair Display', serif;
+  color: #8D5B4C;
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 2px solid #8D5B4C;
+  color: #8D5B4C;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: #8D5B4C;
+    color: white;
+  }
+}
+
+#confirmationFlower {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

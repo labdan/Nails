@@ -1,1 +1,45 @@
-<p>booking works!</p>
+<div class="booking-container w-full max-w-2xl mx-auto rounded-2xl shadow-lg p-6 md:p-10 relative overflow-hidden">
+  <div id="booking-steps">
+    <!-- Step 1: Services -->
+    <div *ngIf="bookingState.currentStep === 1" class="step fade-in">
+      <app-service-selection></app-service-selection>
+    </div>
+
+    <!-- Step 2: Date & Time -->
+    <div *ngIf="bookingState.currentStep === 2" class="step fade-in">
+      <h2 class="step-title text-3xl font-bold text-center mb-2">Pick a Date & Time</h2>
+      <p class="text-center text-gray-500 mb-6">For: <span class="font-semibold">{{ bookingState.service }}</span></p>
+      <app-date-time-picker></app-date-time-picker>
+    </div>
+
+    <!-- Step 3: Your Details -->
+    <div *ngIf="bookingState.currentStep === 3" class="step fade-in">
+      <app-user-details></app-user-details>
+    </div>
+
+    <!-- Step 4: Confirmation -->
+    <div *ngIf="bookingState.currentStep === 4" class="step fade-in">
+      <app-confirmation></app-confirmation>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="mt-10 flex justify-between">
+    <button 
+      *ngIf="showBackButton()" 
+      (click)="previousStep()" 
+      class="btn-secondary px-6 py-2 rounded-lg font-semibold">
+      Back
+    </button>
+    <div *ngIf="!showBackButton()"></div>
+    
+    <button 
+      *ngIf="showNextButton()" 
+      (click)="nextStep()" 
+      [disabled]="!canProceed()"
+      class="btn-primary px-6 py-2 rounded-lg font-semibold"
+      [class.opacity-50]="!canProceed()">
+      {{ getNextButtonText() }}
+    </button>
+  </div>
+</div>

@@ -1,1 +1,43 @@
-<p>user-details works!</p>
+<h2 class="step-title text-3xl font-bold text-center mb-8">Your Details</h2>
+<div class="space-y-8">
+  <div class="relative form-field opacity-0">
+    <input 
+      type="text" 
+      id="name" 
+      [(ngModel)]="userDetails.name"
+      (input)="onInputChange()"
+      class="form-input w-full p-2 text-lg" 
+      placeholder=" "
+      required>
+    <label for="name" class="absolute left-2 -top-3.5 text-gray-600 text-sm transition-all">
+      Full Name *
+    </label>
+  </div>
+  
+  <div class="relative form-field opacity-0">
+    <input 
+      type="email" 
+      id="email" 
+      [(ngModel)]="userDetails.email"
+      (input)="onInputChange()"
+      class="form-input w-full p-2 text-lg" 
+      placeholder=" "
+      required>
+    <label for="email" class="absolute left-2 -top-3.5 text-gray-600 text-sm transition-all">
+      Email *
+    </label>
+  </div>
+  
+  <div class="relative form-field opacity-0">
+    <input 
+      type="tel" 
+      id="phone" 
+      [(ngModel)]="userDetails.phone"
+      (input)="onInputChange()"
+      class="form-input w-full p-2 text-lg" 
+      placeholder=" ">
+    <label for="phone" class="absolute left-2 -top-3.5 text-gray-600 text-sm transition-all">
+      Phone Number
+    </label>
+  </div>
+</div>
