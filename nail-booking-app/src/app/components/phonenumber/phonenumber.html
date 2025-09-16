@@ -11,19 +11,25 @@
     <div class="welcome-element flex gap-3 opacity-0">
       <!-- Country Code Dropdown -->
       <div class="relative">
-        <select 
-          [(ngModel)]="countryCode"
-          (change)="onPhoneChange()"
-          class="form-input w-20 p-3 text-lg border-2 border-rose-200 rounded-lg focus:border-rose-400 focus:outline-none appearance-none bg-white">
-          @for (country of countryCodes; track country.code) {
-            <option [value]="country.code">{{ country.code }}</option>
-          }
-        </select>
-        <div class="absolute inset-y-0 right-2 flex items-center pointer-events-none">
-          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </div>
+        @if (isLoading) {
+          <div class="form-input w-48 p-3 text-lg border-2 border-rose-200 rounded-lg bg-gray-100 animate-pulse">
+            Loading...
+          </div>
+        } @else {
+          <select 
+            [(ngModel)]="countryCode"
+            (change)="onPhoneChange()"
+            class="form-input w-48 p-3 text-lg border-2 border-rose-200 rounded-lg focus:border-rose-400 focus:outline-none appearance-none bg-white">
+            @for (country of countryCodes; track country.code) {
+              <option [value]="country.dial_code">{{ country.flag }} {{ country.dial_code }} {{ country.name }}</option>
+            }
+          </select>
+          <div class="absolute inset-y-0 right-2 flex items-center pointer-events-none">
+            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </div>
+        }
       </div>
       
       <!-- Phone Number Input -->

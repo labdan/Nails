@@ -19,4 +19,23 @@
 select.form-input {
   background-image: none;
   padding-right: 2rem;
+  font-family: 'Poppins', sans-serif;
+  
+  option {
+    font-family: 'Poppins', sans-serif;
+    padding: 0.5rem;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
 }

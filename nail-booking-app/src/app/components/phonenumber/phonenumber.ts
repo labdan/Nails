@@ -1,9 +1,17 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { BookingService } from '../../services/booking';
 
 declare var anime: any;
+
+interface CountryCode {
+  name: string;
+  flag: string;
+  code: string;
+  dial_code: string;
+}
 
 @Component({
   selector: 'app-phonenumber',
@@ -13,30 +21,21 @@ declare var anime: any;
   styleUrl: './phonenumber.scss'
 })
 export class Phonenumber implements OnInit, AfterViewInit {
-  countryCode = '+1'; // Default to US
+  countryCode = '+49'; // Default to Germany
   phoneNumber = '';
-  
-  countryCodes = [
-    { code: '+1', country: 'US/CA' },
-    { code: '+44', country: 'UK' },
-    { code: '+33', country: 'FR' },
-    { code: '+49', country: 'DE' },
-    { code: '+39', country: 'IT' },
-    { code: '+34', country: 'ES' },
-    { code: '+31', country: 'NL' },
-    { code: '+46', country: 'SE' },
-    { code: '+47', country: 'NO' },
-    { code: '+45', country: 'DK' }
-  ];
+  countryCodes: CountryCode[] = [];
+  isLoading = true;
 
-  constructor(private bookingService: BookingService) {}
+  constructor(private bookingService: BookingService, private http: HttpClient) {}
 
   ngOnInit(): void {
+    this.loadCountryCodes();
+    
     const state = this.bookingService.getCurrentState();
     if (state.details.phone) {
       // Parse existing phone number if available
       const phone = state.details.phone;
-      const countryCodeMatch = phone.match(/^(\+\d{1,3})/);
+      const countryCodeMatch = phone.match(/^(\+\d{1,4})/);
       if (countryCodeMatch) {
         this.countryCode = countryCodeMatch[1];
         this.phoneNumber = phone.replace(countryCodeMatch[1], '').trim();
@@ -44,6 +43,37 @@ export class Phonenumber implements OnInit, AfterViewInit {
         this.phoneNumber = phone;
       }
     }
+  }
+
+  private loadCountryCodes(): void {
+    console.log('Loading country codes...');
+    this.http.get<CountryCode[]>('/assets/countrycodes.json').subscribe({
+      next: (data) => {
+        console.log('Country codes loaded successfully:', data.length, 'countries');
+        this.countryCodes = data;
+        this.isLoading = false;
+        
+        // Set Germany as default if no phone number exists yet
+        const state = this.bookingService.getCurrentState();
+        if (!state.details.phone) {
+          this.countryCode = '+49'; // Germany
+        }
+      },
+      error: (error) => {
+        console.error('Error loading country codes:', error);
+        console.log('Using fallback country list');
+        // Fallback to a basic list if file loading fails
+        this.countryCodes = [
+          { name: 'Germany', flag: '🇩🇪', code: 'DE', dial_code: '+49' },
+          { name: 'United States', flag: '🇺🇸', code: 'US', dial_code: '+1' },
+          { name: 'United Kingdom', flag: '🇬🇧', code: 'GB', dial_code: '+44' },
+          { name: 'France', flag: '🇫🇷', code: 'FR', dial_code: '+33' },
+          { name: 'Spain', flag: '🇪🇸', code: 'ES', dial_code: '+34' },
+          { name: 'Italy', flag: '🇮🇹', code: 'IT', dial_code: '+39' }
+        ];
+        this.isLoading = false;
+      }
+    });
   }
 
   ngAfterViewInit(): void {
